@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Fitness Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #dcfce7, #f0fdf4);
+            color: #1e293b;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background: #16a34a;
+            color: white;
+            padding: 18px 40px;
+            display: none;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h2 {
+            font-size: 24px;
+        }
+
+        .logout-btn {
+            background: white;
+            color: #16a34a;
+            border: none;
+            padding: 10px 18px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        /* AUTH PAGE */
+        .auth-container {
+            width: 420px;
+            max-width: 92%;
+            margin: 60px auto;
+        }
+
+        .card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        .auth-title {
+            text-align: center;
+            color: #16a34a;
+            margin-bottom: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #16a34a;
+        }
+
+        .btn {
+            width: 100%;
+            background: #16a34a;
+            color: white;
+            border: none;
+            padding: 13px;
+            border-radius: 7px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .btn:hover {
+            background: #15803d;
+        }
+
+        .link-btn {
+            background: none;
+            border: none;
+            color: #16a34a;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .message {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        /* DASHBOARD */
+        #dashboard {
+            display: none;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .welcome {
+            background: linear-gradient(135deg, #16a34a, #22c55e);
+            color: white;
+            padding: 30px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            margin-bottom: 8px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+        }
+
+        .dashboard-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .dashboard-card h2 {
+            color: #16a34a;
+            margin-bottom: 20px;
+        }
+
+        .profile-info {
+            line-height: 2;
+        }
+
+        .profile-info strong {
+            color: #16a34a;
+        }
+
+        .bmi-result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f0fdf4;
+            border-left: 5px solid #16a34a;
+            display: none;
+        }
+
+        .plan {
+            background: #f8fafc;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border-left: 4px solid #16a34a;
+        }
+
+        .plan h3 {
+            color: #16a34a;
+            margin-bottom: 8px;
+        }
+
+        .plan ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+
+        @media(max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .navbar {
+                padding: 15px 20px;
+            }
+
+            .navbar h2 {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar" id="navbar">
+
+    <h2>💪 Fitness Management System</h2>
+
+    <button class="logout-btn" onclick="logout()">
+        Logout
+    </button>
+
+</div>
+
+
+<!-- ================= LOGIN PAGE ================= -->
+
+<div class="auth-container" id="loginSection">
+
+    <div class="card">
+
+        <h2 class="auth-title">
+            🔐 Login
+        </h2>
+
+        <div class="form-group">
+            <label>Email</label>
+
+            <input
+                type="email"
+                id="loginEmail"
+                placeholder="Enter your email"
+            >
+        </div>
+
+        <div class="form-group">
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="loginPassword"
+                placeholder="Enter your password"
+            >
+        </div>
+
+        <button class="btn" onclick="login()">
+            Login
+        </button>
+
+        <div id="loginMessage" class="message"></div>
+
+        <p style="margin-top:20px;text-align:center;">
+
+            Don't have an account?
+
+            <button class="link-btn" onclick="showRegister()">
+                Register
+            </button>
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================= REGISTRATION PAGE ================= -->
+
+<div class="auth-container" id="registerSection" style="display:none;">
+
+    <div class="card">
+
+        <h2 class="auth-title">
+            📝 Create Account
+        </h2>
+
+        <div class="form-group">
+
+            <label>Full Name</label>
+
+            <input
+                type="text"
+                id="regName"
+                placeholder="Enter your full name"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Email</label>
+
+            <input
+                type="email"
+                id="regEmail"
+                placeholder="Enter your email"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Password</label>
+
+            <input
+                type="password"
+                id="regPassword"
+                placeholder="Create a password"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Age</label>
+
+            <input
+                type="number"
+                id="regAge"
+                placeholder="Enter your age"
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label>Gender</label>
+
+            <select id="regGender">
+
+                <option value="">
+                    Select Gender
+                </option>
+
+                <option value="Male">
+                    Male
+                </option>
+
+                <option value="Female">
+                    Female
+                </option>
+
+                <option value="Other">
+                    Other
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <button class="btn" onclick="register()">
+            Register
+        </button>
+
+
+        <div id="registerMessage" class="message"></div>
+
+
+        <p style="margin-top:20px;text-align:center;">
+
+            Already have an account?
+
+            <button class="link-btn" onclick="showLogin()">
+                Login
+            </button>
+
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================= DASHBOARD ================= -->
+
+<div class="container" id="dashboard">
+
+    <div class="welcome">
+
+        <h1>
+            Welcome, <span id="welcomeName"></span> 👋
+        </h1>
+
+        <p>
+            Track your fitness journey and achieve your goals.
+        </p>
+
+    </div>
+
+
+    <div class="grid">
+
+        <!-- PROFILE -->
+
+        <div class="dashboard-card">
+
+            <h2>👤 User Profile</h2>
+
+            <div class="profile-info">
+
+                <p>
+                    <strong>Name:</strong>
+                    <span id="profileName"></span>
+                </p>
+
+                <p>
+                    <strong>Email:</strong>
+                    <span id="profileEmail"></span>
+                </p>
+
+                <p>
+                    <strong>Age:</strong>
+                    <span id="profileAge"></span>
+                </p>
+
+                <p>
+                    <strong>Gender:</strong>
+                    <span id="profileGender"></span>
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- FITNESS GOAL -->
+
+        <div class="dashboard-card">
+
+            <h2>🎯 Fitness Goal</h2>
+
+            <div class="form-group">
+
+                <label>
+                    Select Your Goal
+                </label>
+
+                <select id="fitnessGoal" onchange="showGoal()">
+
+                    <option value="">
+                        Select Goal
+                    </option>
+
+                    <option value="weightloss">
+                        Weight Loss
+                    </option>
+
+                    <option value="musclegain">
+                        Muscle Gain
+                    </option>
+
+                    <option value="fitness">
+                        General Fitness
+                    </option>
+
+                    <option value="flexibility">
+                        Flexibility
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div id="goalResult"></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- BMI -->
+
+    <div class="dashboard-card" style="margin-top:25px;">
+
+        <h2>⚖️ BMI Calculator</h2>
+
+        <div class="grid">
+
+            <div class="form-group">
+
+                <label>
+                    Weight (kg)
+                </label>
+
+                <input
+                    type="number"
+                    id="weight"
+                    placeholder="Enter weight"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Height (cm)
+                </label>
+
+                <input
+                    type="number"
+                    id="height"
+                    placeholder="Enter height"
+                >
+
+            </div>
+
+        </div>
+
+
+        <button class="btn" onclick="calculateBMI()">
+            Calculate BMI
+        </button>
+
+
+        <div id="bmiResult" class="bmi-result"></div>
+
+    </div>
+
+
+    <!-- FITNESS PLAN -->
+
+    <div class="dashboard-card" style="margin-top:25px;">
+
+        <h2>🏋️ Weekly Fitness Plan</h2>
+
+
+        <div class="plan">
+
+            <h3>Monday - Chest & Triceps</h3>
+
+            <ul>
+
+                <li>Push-ups - 3 × 12</li>
+
+                <li>Bench Press - 3 × 10</li>
+
+                <li>Triceps Dips - 3 × 12</li>
+
+                <li>Plank - 3 × 30 seconds</li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="plan">
+
+            <h3>Tuesday - Cardio</h3>
+
+            <ul>
+
+                <li>Running - 20 minutes</li>
+
+                <li>Jumping Jacks - 3 × 20</li>
+
+                <li>Mountain Climbers - 3 × 15</li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="plan">
+
+            <h3>Wednesday - Legs</h3>
+
+            <ul>
+
+                <li>Squats - 3 × 15</li>
+
+                <li>Lunges - 3 × 10</li>
+
+                <li>Calf Raises - 3 × 15</li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="plan">
+
+            <h3>Thursday - Rest</h3>
+
+            <ul>
+
+                <li>Light Walking</li>
+
+                <li>Stretching</li>
+
+                <li>Recovery</li>
+
+            </ul>
+
+        </div>
+
+
+        <div class="plan">
+
+            <h3>Friday - Full Body</h3>
+
+            <ul>
+
+                <li>Push-ups - 3 × 12</li>
+
+                <li>Squats - 3 × 15</li>
+
+                <li>Burpees - 3 × 10</li>
+
+                <li>Plank - 3 × 30 seconds</li>
+
+            </ul>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= JAVASCRIPT ================= -->
+
+<script>
+
+/* ================= SHOW REGISTER ================= */
+
+function showRegister() {
+
+    document.getElementById("loginSection").style.display = "none";
+
+    document.getElementById("registerSection").style.display = "block";
+
+}
+
+
+/* ================= SHOW LOGIN ================= */
+
+function showLogin() {
+
+    document.getElementById("registerSection").style.display = "none";
+
+    document.getElementById("loginSection").style.display = "block";
+
+}
+
+
+/* ================= REGISTER ================= */
+
+function register() {
+
+    let name =
+        document.getElementById("regName").value.trim();
+
+    let email =
+        document.getElementById("regEmail").value.trim();
+
+    let password =
+        document.getElementById("regPassword").value;
+
+    let age =
+        document.getElementById("regAge").value;
+
+    let gender =
+        document.getElementById("regGender").value;
+
+
+    let message =
+        document.getElementById("registerMessage");
+
+
+    /* Validate fields */
+
+    if (
+        name === "" ||
+        email === "" ||
+        password === "" ||
+        age === "" ||
+        gender === ""
+    ) {
+
+        message.innerHTML =
+            "❌ Please fill all fields.";
+
+        message.className =
+            "message error";
+
+        message.style.display =
+            "block";
+
+        return;
+    }
+
+
+    /* Validate password */
+
+    if (password.length < 6) {
+
+        message.innerHTML =
+            "❌ Password must contain at least 6 characters.";
+
+        message.className =
+            "message error";
+
+        message.style.display =
+            "block";
+
+        return;
+    }
+
+
+    /* Check existing user */
+
+    let existingUser =
+        localStorage.getItem("fitnessUser");
+
+
+    if (existingUser) {
+
+        let user =
+            JSON.parse(existingUser);
+
+
+        if (
+            user.email.toLowerCase() ===
+            email.toLowerCase()
+        ) {
+
+            message.innerHTML =
+                "❌ Email is already registered.";
+
+            message.className =
+                "message error";
+
+            message.style.display =
+                "block";
+
+            return;
+        }
+    }
+
+
+    /* Create user */
+
+    let user = {
+
+        name: name,
+
+        email: email,
+
+        password: password,
+
+        age: age,
+
+        gender: gender
+
+    };
+
+
+    /* Save user */
+
+    localStorage.setItem(
+        "fitnessUser",
+        JSON.stringify(user)
+    );
+
+
+    /* Success */
+
+    message.innerHTML =
+        "✅ Registration successful! Redirecting to login...";
+
+    message.className =
+        "message success";
+
+    message.style.display =
+        "block";
+
+
+    /* Clear form */
+
+    document.getElementById("regName").value = "";
+
+    document.getElementById("regEmail").value = "";
+
+    document.getElementById("regPassword").value = "";
+
+    document.getElementById("regAge").value = "";
+
+    document.getElementById("regGender").value = "";
+
+
+    /* Go to login */
+
+    setTimeout(function() {
+
+        showLogin();
+
+    }, 1500);
+
+}
+
+
+/* ================= LOGIN ================= */
+
+function login() {
+
+    let email =
+        document.getElementById("loginEmail").value.trim();
+
+    let password =
+        document.getElementById("loginPassword").value;
+
+
+    let message =
+        document.getElementById("loginMessage");
+
+
+    /* Validate */
+
+    if (email === "" || password === "") {
+
+        message.innerHTML =
+            "❌ Please enter email and password.";
+
+        message.className =
+            "message error";
+
+        message.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    /* Get registered user */
+
+    let savedUser =
+        localStorage.getItem("fitnessUser");
+
+
+    if (!savedUser) {
+
+        message.innerHTML =
+            "❌ No registered user found. Please register first.";
+
+        message.className =
+            "message error";
+
+        message.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    let user =
+        JSON.parse(savedUser);
+
+
+    /* Check login */
+
+    if (
+        email.toLowerCase() ===
+        user.email.toLowerCase() &&
+        password === user.password
+    ) {
+
+        localStorage.setItem(
+            "loggedIn",
+            "true"
+        );
+
+
+        message.innerHTML =
+            "✅ Login successful!";
+
+
+        message.className =
+            "message success";
+
+
+        message.style.display =
+            "block";
+
+
+        setTimeout(function() {
+
+            showDashboard();
+
+        }, 500);
+
+    }
+
+    else {
+
+        message.innerHTML =
+            "❌ Invalid email or password.";
+
+        message.className =
+            "message error";
+
+        message.style.display =
+            "block";
+
+    }
+
+}
+
+
+/* ================= SHOW DASHBOARD ================= */
+
+function showDashboard() {
+
+    let savedUser =
+        localStorage.getItem("fitnessUser");
+
+
+    if (!savedUser) {
+
+        return;
+
+    }
+
+
+    let user =
+        JSON.parse(savedUser);
+
+
+    document.getElementById("loginSection").style.display =
+        "none";
+
+    document.getElementById("registerSection").style.display =
+        "none";
+
+    document.getElementById("dashboard").style.display =
+        "block";
+
+    document.getElementById("navbar").style.display =
+        "flex";
+
+
+    document.getElementById("welcomeName").innerText =
+        user.name;
+
+    document.getElementById("profileName").innerText =
+        user.name;
+
+    document.getElementById("profileEmail").innerText =
+        user.email;
+
+    document.getElementById("profileAge").innerText =
+        user.age;
+
+    document.getElementById("profileGender").innerText =
+        user.gender;
+
+}
+
+
+/* ================= LOGOUT ================= */
+
+function logout() {
+
+    localStorage.removeItem("loggedIn");
+
+
+    document.getElementById("dashboard").style.display =
+        "none";
+
+    document.getElementById("navbar").style.display =
+        "none";
+
+
+    document.getElementById("loginSection").style.display =
+        "block";
+
+
+    document.getElementById("loginEmail").value =
+        "";
+
+    document.getElementById("loginPassword").value =
+        "";
+
+
+    document.getElementById("loginMessage").style.display =
+        "none";
+
+}
+
+
+/* ================= BMI ================= */
+
+function calculateBMI() {
+
+    let weight =
+        parseFloat(
+            document.getElementById("weight").value
+        );
+
+    let height =
+        parseFloat(
+            document.getElementById("height").value
+        );
+
+
+    let result =
+        document.getElementById("bmiResult");
+
+
+    if (
+        !weight ||
+        !height ||
+        weight <= 0 ||
+        height <= 0
+    ) {
+
+        result.innerHTML =
+            "❌ Please enter valid height and weight.";
+
+        result.style.display =
+            "block";
+
+        return;
+
+    }
+
+
+    let heightMeter =
+        height / 100;
+
+
+    let bmi =
+        weight /
+        (heightMeter * heightMeter);
+
+
+    bmi =
+        bmi.toFixed(2);
+
+
+    let category;
+
+
+    if (bmi < 18.5) {
+
+        category = "Underweight";
+
+    }
+
+    else if (bmi < 25) {
+
+        category = "Normal Weight";
+
+    }
+
+    else if (bmi < 30) {
+
+        category = "Overweight";
+
+    }
+
+    else {
+
+        category = "Obesity";
+
+    }
+
+
+    result.innerHTML =
+
+        "<strong>Your BMI: " +
+        bmi +
+        "</strong><br>" +
+
+        "Category: " +
+        category;
+
+
+    result.style.display =
+        "block";
+
+}
+
+
+/* ================= FITNESS GOAL ================= */
+
+function showGoal() {
+
+    let goal =
+        document.getElementById("fitnessGoal").value;
+
+    let result =
+        document.getElementById("goalResult");
+
+
+    if (goal === "weightloss") {
+
+        result.innerHTML = `
+
+            <div class="plan">
+
+                <h3>🔥 Weight Loss</h3>
+
+                <p>
+                    Focus on cardio, strength training
+                    and a balanced diet.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    else if (goal === "musclegain") {
+
+        result.innerHTML = `
+
+            <div class="plan">
+
+                <h3>💪 Muscle Gain</h3>
+
+                <p>
+                    Focus on resistance training,
+                    recovery and adequate protein.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    else if (goal === "fitness") {
+
+        result.innerHTML = `
+
+            <div class="plan">
+
+                <h3>🏃 General Fitness</h3>
+
+                <p>
+                    Combine cardio, strength exercises
+                    and regular stretching.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    else if (goal === "flexibility") {
+
+        result.innerHTML = `
+
+            <div class="plan">
+
+                <h3>🧘 Flexibility</h3>
+
+                <p>
+                    Practice stretching, mobility exercises
+                    and yoga regularly.
+                </p>
+
+            </div>
+
+        `;
+
+    }
+
+
+    else {
+
+        result.innerHTML = "";
+
+    }
+
+}
+
+
+/* ================= AUTO LOGIN ================= */
+
+window.onload = function() {
+
+    let loggedIn =
+        localStorage.getItem("loggedIn");
+
+    let user =
+        localStorage.getItem("fitnessUser");
+
+
+    if (
+        loggedIn === "true" &&
+        user
+    ) {
+
+        showDashboard();
+
+    }
+
+};
+
+</script>
+
+</body>
+</html>
